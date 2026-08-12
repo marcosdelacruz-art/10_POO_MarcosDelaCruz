@@ -14,7 +14,7 @@ public class Main {
         //Carga Mínima de Pruebas: 5 contactos precargados
         controller.agregarContacto(new Contacto(1, "Ana", "Torres", "Cañete", "983745656", "ana@gmail.com"));
         controller.agregarContacto(new Contacto(2, "Carlos", "Perez", "Imperial", "951264456", "carlos@gmail.com"));
-        controller.agregarContacto(new Contacto(3, "Valery", "Chumpitaz", "Imperial", "951264456", "valery@gmail.com"));
+        controller.agregarContacto(new Contacto(3, "Marcos", "De la Cruz", "Mala", "987654321", "marcos@gmail.com"));
         controller.agregarContacto(new Contacto(4, "Luis", "Mendoza", "Mala", "987654321", "luis@gmail.com"));
         controller.agregarContacto(new Contacto(5, "Maria", "Rojas", "San Vicente", "912345678", "maria@gmail.com"));
 
