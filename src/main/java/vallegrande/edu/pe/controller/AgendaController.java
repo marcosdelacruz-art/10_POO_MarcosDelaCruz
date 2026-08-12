@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class AgendaController {
 
     //Lista Contactos ( Almacenar )
-    private ArrayList <Contacto> contactos;
+    private ArrayList<Contacto> contactos;
 
     //Constructor
     public AgendaController(){
@@ -16,40 +16,39 @@ public class AgendaController {
     //Agregar Contacto
     public void agregarContacto(Contacto contacto){
         contactos.add(contacto);
-        System.out.println("Conctacto Agregado correctamente");
+    }
+
+    //Obtener todos los contactos
+    public ArrayList<Contacto> getContactos() {
+        return contactos;
     }
 
     //Listar Contactos
     public void listarContactos(){
-        System.out.println("LISTA DE CONTACTOS");
-        for ( Contacto contacto : contactos){
+        if (contactos.isEmpty()) {
+            System.out.println("La agenda está vacía.");
+            return;
+        }
+        System.out.println("--- LISTA DE CONTACTOS ---");
+        for (Contacto contacto : contactos){
             contacto.mostrarContacto();
         }
     }
 
-    // AÑADIDO - RETO 1: Buscar Contacto
-    public void buscarContacto(int id) {
-        boolean encontrado = false;
+    //Buscar Contacto por Nombre o Apellido
+    public ArrayList<Contacto> buscarContacto(String criterio) {
+        ArrayList<Contacto> encontrados = new ArrayList<>();
         for (Contacto contacto : contactos) {
-            if (contacto.getId() == id) {
-                System.out.println("--- CONTACTO ENCONTRADO ---");
-                contacto.mostrarContacto();
-                encontrado = true;
-                break;
+            if (contacto.getNombres().toLowerCase().contains(criterio.toLowerCase()) ||
+                    contacto.getApellidos().toLowerCase().contains(criterio.toLowerCase())) {
+                encontrados.add(contacto);
             }
         }
-        if (!encontrado) {
-            System.out.println("No se encontró ningún contacto con el ID: " + id);
-        }
+        return encontrados;
     }
 
-    // AÑADIDO - RETO 2: Eliminar Contacto
-    public void eliminarContacto(int id) {
-        boolean eliminado = contactos.removeIf(contacto -> contacto.getId() == id);
-        if (eliminado) {
-            System.out.println("Contacto con ID " + id + " eliminado correctamente.");
-        } else {
-            System.out.println("No se encontró el contacto con ID " + id + " para eliminar.");
-        }
+    //Eliminar Contacto por ID
+    public boolean eliminarContacto(int id) {
+        return contactos.removeIf(contacto -> contacto.getId() == id);
     }
 }

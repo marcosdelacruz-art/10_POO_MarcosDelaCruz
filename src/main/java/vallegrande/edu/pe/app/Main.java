@@ -3,6 +3,7 @@ package vallegrande.edu.pe.app;
 import vallegrande.edu.pe.controller.AgendaController;
 import vallegrande.edu.pe.model.Contacto;
 import vallegrande.edu.pe.view.AgendaView;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,53 +11,63 @@ public class Main {
         AgendaController controller = new AgendaController();
         AgendaView view = new AgendaView();
 
-        //Mostrar Informacion
+        //Carga Mínima de Pruebas: 5 contactos precargados
+        controller.agregarContacto(new Contacto(1, "Ana", "Torres", "Cañete", "983745656", "ana@gmail.com"));
+        controller.agregarContacto(new Contacto(2, "Carlos", "Perez", "Imperial", "951264456", "carlos@gmail.com"));
+        controller.agregarContacto(new Contacto(3, "Valery", "Chumpitaz", "Imperial", "951264456", "valery@gmail.com"));
+        controller.agregarContacto(new Contacto(4, "Luis", "Mendoza", "Mala", "987654321", "luis@gmail.com"));
+        controller.agregarContacto(new Contacto(5, "Maria", "Rojas", "San Vicente", "912345678", "maria@gmail.com"));
+
+        int opcion;
+
         view.mostrarTitulo();
 
-        //Crear contactos
-        Contacto contacto1 = new Contacto(
-                1,
-                "Ana",
-                "Torres",
-                "Cañete",
-                "983745656",
-                "ana@gmail.com"
-        );
-        Contacto contacto2 = new Contacto(
-                2,
-                "Carlos",
-                "Perez",
-                "Imperial",
-                "951264456",
-                "carlos@gmail.com"
-        );
-        Contacto contacto3 = new Contacto(
-                3,
-                "Valery",
-                "Chumpitaz",
-                "Imperial",
-                "951264456",
-                "carlos@gmail.com"
-        );
-        //Agregar contactos
-        controller.agregarContacto(contacto1);
-        controller.agregarContacto(contacto2);
-        controller.agregarContacto(contacto3);
+        do {
+            opcion = view.mostrarMenuYObtenerOpcion();
 
-        //Listar Contactos
-        controller.listarContactos();
+            switch (opcion) {
+                case 1:
+                    Contacto nuevo = view.solicitarDatosContacto();
+                    controller.agregarContacto(nuevo);
+                    view.mostrarMensaje("Contacto agregado correctamente.");
+                    break;
 
-        //RETO 1: Buscar Contacto
-        System.out.println("\n--- RETO 1: BUSCAR CONTACTO CON ID 2 ---");
-        controller.buscarContacto(2);
+                case 2:
+                    controller.listarContactos();
+                    break;
 
-        //RETO 2: Eliminar Contacto
-        System.out.println("\n--- RETO 2: ELIMINAR CONTACTO CON ID 1 ---");
-        controller.eliminarContacto(1);
+                case 3:
+                    String criterio = view.solicitarCriterioBusqueda();
+                    ArrayList<Contacto> resultados = controller.buscarContacto(criterio);
+                    if (resultados.isEmpty()) {
+                        view.mostrarMensaje("No se encontraron contactos que coincidan con: " + criterio);
+                    } else {
+                        view.mostrarMensaje("\n--- RESULTADOS DE LA BÚSQUEDA ---");
+                        for (Contacto c : resultados) {
+                            c.mostrarContacto();
+                        }
+                    }
+                    break;
 
-        //Verificar los cambios listando los contactos
-        System.out.println("\n--- LISTA ACTUALIZADA ---");
-        controller.listarContactos();
+                case 4:
+                    int idEliminar = view.solicitarIdEliminar();
+                    boolean eliminado = controller.eliminarContacto(idEliminar);
+                    if (eliminado) {
+                        view.mostrarMensaje("Contacto con ID " + idEliminar + " eliminado correctamente.");
+                    } else {
+                        view.mostrarMensaje("No se encontró ningún contacto con el ID " + idEliminar);
+                    }
+                    break;
+
+                case 5:
+                    view.mostrarMensaje("¡Saliendo del programa!");
+                    break;
+
+                default:
+                    view.mostrarMensaje("Opción no válida. Intente nuevamente.");
+                    break;
+            }
+
+        } while (opcion != 5);
     }
-
 }
